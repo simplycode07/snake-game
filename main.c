@@ -1,35 +1,53 @@
+// source.h contains kbhit and getch functions to get keyboard presses
 #include "source.h"
 #include <unistd.h>
 
+int width = 100;
+int height = 40;
+
+// handles printing all the spaces and character for snake and fruit
 void draw(int snake[][2], int fruit_x, int fruit_y, int score){
 	int draw_space = 0;
-	for (int i=0; i<=40; i++){
-		for (int j=0; j<=50; j++){
-			/* if (i == player_y && j == player_x){ */
-			/* 	printf("0 "); */
-			/* 	continue; */
-			/* } */
+
+	for (int i=0; i<=height; i++){
+		draw_space = 1;
+		for (int j=0; j<=width; j++){
+			draw_space = 1;
 			for (int k=0; k<=score; k++){
+				// printing 0 if i and j are same as coordinates of snake
 				if (snake[k][0] == j && snake[k][1] == i){
-					printf("0 ");
-					continue;
+					printf("0");
+					draw_space = 0;
+					break;
+				}
+
+				// setting draw_space 1 if no 0's are printed
+				else{ 
+					draw_space = 1;
 				}
 				
-				if (i == fruit_y && j == fruit_x){
-					printf("@ ");
-					draw_space = 0;
-					continue;
-				}
-				printf("  ");
+			}
+
+			// checking if prints @ if the coordinates matches fruits location
+			if (i == fruit_y && j == fruit_x){
+				printf("@");
+				draw_space = 0;
+				continue;
+			}
+			// draw_space is to prevent program from printing extra space, without it the boundaries come out weird
+			if (draw_space){
+				printf(" ");
 			}
 		}
 		printf("|\n");
 	}
 
-	for (int i=0; i<=50; i++){
-		printf("__");
+	for (int i=0; i<=width; i++){
+		printf("_");
 	}
 	printf("|\n");
+
+	// printing score and x, y coordinates of snake (for debug only)
 	printf("Score - %d\n", score);
 	for (int i=0; i<=score; i++){
 		printf("{%d, %d} - ", snake[i][0], snake[i][1]);
@@ -37,8 +55,10 @@ void draw(int snake[][2], int fruit_x, int fruit_y, int score){
 	}
 }
 
+
 int main(){
-	int snake[100][2] = {{0,0}};
+	srand(time(0));
+	int snake[100][2] = {{0,0}}; // starting coordinates of snake is (0,0)
 	int speed_x = 1;
 	int speed_y = 0;
 	char key_pressed;
@@ -81,29 +101,31 @@ int main(){
 			
 		}
 
-// checking for collision	
-		if (!(snake[0][1] >= 0 && snake[0][1] < 40) | !(snake[0][0] >= 0 && snake[0][0] < 50)){
+		// checking for collision	
+		if (!(snake[0][1] >= 0 && snake[0][1] < height) | !(snake[0][0] >= 0 && snake[0][0] < width)){
 			printf("Game over lmaoooo\n");
 			break;
 		}
 		
+		// this just cycles value of array in forward direction
 		for (int i=score; i>=0; i--){
 			snake[i+1][0] = snake[i][0]; 
 			snake[i+1][1] = snake[i][1];
 		}
 
-		snake[0][0] += speed_x;
-		snake[0][1] += speed_y;
-
-		if (snake[0][0] == fruit_x && snake[0][0] == fruit_y){
+		// checking for collision with fruit
+		if (snake[0][0] == fruit_x && snake[0][1] == fruit_y){
 			score += 1;
 			fruit_x = rand()%50;
 			fruit_y = rand()%40;
 		}
 
+		// incrementing speed to x and y of snake
+		snake[0][0] += speed_x;
+		snake[0][1] += speed_y;
+
 		printf("\e[1;H\e[2J"); // clear the screen
 		draw(snake, fruit_x, fruit_y, score);
-
-		usleep(300*1000);
+		usleep(100*1000); // using constant sleep because the draw functions takes around 0.0002 second to complete which is negligible as compared to 0.001
 	}
 }
