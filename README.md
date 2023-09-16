@@ -1,7 +1,8 @@
 
 # Snake Game CLI
-Simple snake game for commandline made with c
-use WASD to move
+Simple snake game for commandline made with C.
+
+Use WASD to move
 
 ### How to Run -
 
