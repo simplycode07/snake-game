@@ -22,5 +22,9 @@ $ gcc main.c -o main.exe && ./main.exe
 
 
 ### Screenshots 
-https://github.com/simplycode07/snake-game/blob/53b20dae28fe774eda7ba3d6572928ee6d5e509c/screenshots/Screencast%202023-09-17%2000%3A44%3A35.mp4
+
+
+https://github.com/simplycode07/snake-game/assets/72332741/d1569069-16e0-496a-aa54-463d1f803d39
+
+
 ![brr](screenshots/Screenshot%20from%202023-09-17%2001-04-04.png)
