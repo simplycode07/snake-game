@@ -1,6 +1,7 @@
 // source.h contains kbhit and getch functions to get keyboard presses
 #include "source.h"
 #include <unistd.h>
+#include <time.h>
 
 int width = 100;
 int height = 40;
@@ -58,15 +59,16 @@ void draw(int snake[][2], int fruit_x, int fruit_y, int score){
 
 int main(){
 	srand(time(0));
-	int snake[100][2] = {{0,0}}; // starting coordinates of snake is (0,0)
+	int snake[100][2] = {{0,0}, {1,0}}; // starting coordinates of snake is (0,0)
 	int speed_x = 1;
 	int speed_y = 0;
 	char key_pressed;
 	int fruit_x = rand() % 50;
 	int fruit_y = rand() % 40;
-	int score = 0;
+	int score = 1;
+	int running = 1;
 
-	while (1){
+	while (running){
 		if (kbhit()) {
 			key_pressed = getch(); // get key defined, declared in source.h
 
@@ -102,9 +104,17 @@ int main(){
 		}
 
 		// checking for collision	
+		// this only checks if the head has collided with any walls
 		if (!(snake[0][1] >= 0 && snake[0][1] < height) | !(snake[0][0] >= 0 && snake[0][0] < width)){
-			printf("Game over lmaoooo\n");
-			break;
+			printf("\nGame over lmaoooo\n");
+			running = 0;
+		}
+
+		for (int k=1; k<=score; k++){
+			if (snake[k][0] == snake[0][0] && snake[k][1] == snake[0][1]){
+				printf("\ngame over lmaoooo, loser\n");
+				running = 0;
+			}
 		}
 		
 		// this just cycles value of array in forward direction
@@ -123,6 +133,10 @@ int main(){
 		// incrementing speed to x and y of snake
 		snake[0][0] += speed_x;
 		snake[0][1] += speed_y;
+
+
+		// break out of loop before printing this frame
+		if (!running){ break; }
 
 		printf("\e[1;H\e[2J"); // clear the screen
 		draw(snake, fruit_x, fruit_y, score);
