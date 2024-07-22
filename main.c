@@ -1,4 +1,4 @@
-// source.h contains kbhit and getch functions to get keyboard presses
+// source.h contains kbhit and getch functions to get keyboard presse#include <header>s
 #include "source.h"
 #include <unistd.h>
 #include <time.h>
@@ -28,9 +28,8 @@ void draw(int snake[][2], int fruit_x, int fruit_y, int score){
 				}
 				
 			}
-
 			// checking if prints @ if the coordinates matches fruits location
-			if (i == fruit_y && j == fruit_x){
+			if ((i == fruit_y && j == fruit_x) && !(i == snake[0][0] && j == snake[0][1])){
 				printf("@");
 				draw_space = 0;
 				continue;
@@ -50,10 +49,10 @@ void draw(int snake[][2], int fruit_x, int fruit_y, int score){
 
 	// printing score and x, y coordinates of snake (for debug only)
 	printf("Score - %d\n", score);
-	for (int i=0; i<=score; i++){
-		printf("{%d, %d} - ", snake[i][0], snake[i][1]);
-		printf("{%d, %d}\n", fruit_x, fruit_y);
-	}
+	/*for (int i=0; i<=score; i++){*/
+	/*	printf("{%d, %d} - ", snake[i][0], snake[i][1]);*/
+	/*	printf("{%d, %d}\n", fruit_x, fruit_y);*/
+	/*}*/
 }
 
 
